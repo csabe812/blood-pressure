@@ -50,7 +50,6 @@ app.get("/import-data", (req, res, next) => {
                 const dateTime = new Date(row[0]);
                 dateTime.setHours(timeArr[0], timeArr[1]);
                 const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other) VALUES  ('${moment(new Date(dateTime)).format("YYYY-MM-DD HH:mm")}', ${+row[2]},${+row[3]},${+row[4]},'${row[5]}')`;
-                console.log(sql);
                 db.run(sql);
                 dataRows.push({
                     date: moment(new Date(dateTime)).format("YYYY-MM-DD HH:mm"),
@@ -70,8 +69,7 @@ app.get("/import-data", (req, res, next) => {
 app.post("/add", (req, res, next) => {
     const db = new sqlite3.Database('./chinook.db');
     db.serialize(() => {
-        console.log(req.body);
-        const date = moment(new Date(req.body.date)).format("YYYY-MM-DD HH:mm");
+        const date = moment(new Date(req.body.recorded)).format("YYYY-MM-DD HH:mm");
         const sys = req.body.sys;
         const dia = req.body.dia;
         const pulse = req.body.pulse;
@@ -96,9 +94,6 @@ app.get("/average", (req, res, next) => {
               res.send("Error encountered while displaying");
               return console.error(err.message);
             }
-            //console.log(row);
-            //res.send(row);
-            //console.log(row.sys);
             sysArr.push(row.sys);
             diaArr.push(row.dia);
             pulseArr.push(row.pulse);
@@ -129,14 +124,10 @@ app.get("/average/:id", (req, res, next) => {
               res.send("Error encountered while displaying");
               return console.error(err.message);
             }
-            //console.log(row);
-            //res.send(row);
-            //console.log(row.sys);
             sys += +row.sys;
             dia += row.dia;
             pulse += row.pulse;
           },function(err, counter){
-            console.log(counter);
             const resp = {
                 sysAvg: sys/counter,
                 diaAvg: dia/counter,
@@ -162,7 +153,6 @@ app.get("/average-by-year", (req, res, next) => {
             let resp = [];
             let currentYear = new Date().getFullYear();
             let yearData = data.filter(f => f.recorded.startsWith(''+currentYear));
-            console.log(yearData.length);
             while(yearData && yearData.length > 0) {
                 let sys=0;
                 let dia=0;
@@ -202,6 +192,24 @@ app.get("/all-by-year/:year", (req, res, next) => {
             }
             
           
+        );
+    });
+});
+
+app.get("/last-n-data/:n", (req, res, next) => {
+    const db = new sqlite3.Database('./chinook.db');
+    db.serialize(() => {
+        const data =[];
+        db.each(`select * from bloodpressure order by id desc limit ${req.params.n}`, function(err,row){     
+            if(err){
+              res.send("Error encountered while displaying");
+              return console.error(err.message);
+            }
+            data.push(row);
+          },function(err, counter){
+                res.status(200).send(data);
+                db.close();
+            }
         );
     });
 });

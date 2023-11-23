@@ -1,0 +1,10 @@
+# backend
+blood-pressure-be/node_modules/
+blood-pressure-be/Vernyomas_2018_2019_2020_2021_2022_2023.xlsx
+blood-pressure-be/chinook.db
+blood-pressure-be/cluster
+
+# frontend
+blood-pressure-fe/node_modules/
+blood-pressure-fe/.vscode
+blood-pressure-fe/.angular

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container p-3">
     <form class="row g-3" [formGroup]="form">
         <div class="col-md-4">
           <label for="inputSys" class="form-label">Sys</label>
@@ -16,8 +16,11 @@
           <label for="inputOther" class="form-label">Other</label>
           <input type="text" class="form-control" id="other" formControlName="other">
         </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary" (click)="saveData()">Save</button>
+        <div class="col-md-4">
+          <button class="btn btn-secondary w-100" routerLink="/">Back</button>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-primary w-100" (click)="saveData()" [disabled]="!form.valid">Save</button>
         </div>
       </form>
 </div>
