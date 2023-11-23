@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HttpClientModule],
+  imports: [CommonModule, RouterOutlet, HttpClientModule, RouterLink],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -54,6 +54,47 @@ export class AppComponent implements OnInit {
     this.http
       .get<any>('http://localhost:3000/average/' + year)
       .subscribe((data) => this.createChart(data));
+  }
+
+  changeFullYearData(year:number): void {
+    this.http
+      .get<any>('http://localhost:3000/all-by-year/' + year)
+      .subscribe((data: {id:number, recorded: string, other:string, sys: number, dia: number, pulse: number}[]) => {
+        if (this.chart) {
+          this.chart.destroy();
+        }
+        this.chart = new Chart('canvas', {
+          type: 'line',
+          data: {
+            labels: data.sort((a, b) => a.recorded.localeCompare(b.recorded)).map(a => a.recorded),
+            datasets: [
+              {
+                label: 'Sys',
+                data: data.sort((a, b) => a.recorded.localeCompare(b.recorded)).map(m =>m.sys),
+                borderWidth: 1,
+              },
+              {
+                label: 'Dia',
+                data: data.sort((a, b) => a.recorded.localeCompare(b.recorded)).map(m =>m.dia),
+                borderWidth: 1,
+              },
+              {
+                label: 'Pulse',
+                data: data.sort((a, b) => a.recorded.localeCompare(b.recorded)).map(m =>m.pulse),
+                borderWidth: 1,
+              },
+            ],
+          },
+
+          options: {
+            scales: {
+              y: {
+                min: 50
+              },
+            },
+          },
+        });
+      });
   }
 
   createLineChart(): void {

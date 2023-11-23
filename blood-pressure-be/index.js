@@ -71,14 +71,14 @@ app.post("/add", (req, res, next) => {
     const db = new sqlite3.Database('./chinook.db');
     db.serialize(() => {
         console.log(req.body);
-        const date = req.body.date;
+        const date = moment(new Date(req.body.date)).format("YYYY-MM-DD HH:mm");
         const sys = req.body.sys;
         const dia = req.body.dia;
         const pulse = req.body.pulse;
         const other = req.body.other;
         const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other) VALUES  ('${date}', ${sys},${dia},${pulse},'${other}')`;
         db.run(sql);
-        res.status(200).send("Added");
+        res.status(200).send({text:"Added"});
     });
 });
 
@@ -184,6 +184,25 @@ app.get("/average-by-year", (req, res, next) => {
             res.status(200).send(resp);
           })
           
+    });
+});
+
+app.get("/all-by-year/:year", (req, res, next) => {
+    const db = new sqlite3.Database('./chinook.db');
+    db.serialize(() => {
+        const data =[];
+        db.each(`select * from bloodpressure where recorded between "${req.params.year}-01-01" and "${req.params.year}-12-31"`, function(err,row){     
+            if(err){
+              res.send("Error encountered while displaying");
+              return console.error(err.message);
+            }
+            data.push(row);
+          },function(err, counter){
+                res.status(200).send(data);
+            }
+            
+          
+        );
     });
 });
 
