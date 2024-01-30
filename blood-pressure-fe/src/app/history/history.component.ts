@@ -53,12 +53,12 @@ export class HistoryComponent {
 
   changeData(year: number): void {
     this.http
-      .get<any>('http://localhost:3000/average/' + year)
+      .get<any>('http://localhost:5194/average/' + year)
       .subscribe((data) => this.createChart(data));
   }
 
   changeFullYearData(year: number): void {
-    this.http.get<any>('http://localhost:3000/all-by-year/' + year).subscribe(
+    this.http.get<any>('http://localhost:5194/all-by-year/' + year).subscribe(
       (
         data: {
           id: number;
@@ -119,7 +119,7 @@ export class HistoryComponent {
     this.http
       .get<
         { year: number; sysAvg: number; diaAvg: number; pulseAvg: number }[]
-      >('http://localhost:3000/average-by-year/')
+      >('http://localhost:5194/average-by-year/')
       .subscribe(
         (
           data: {

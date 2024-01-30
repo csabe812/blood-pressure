@@ -4,7 +4,7 @@ import { BloodData } from '../model/blood-data';
 
 @Injectable()
 export class BloodPressureService {
-  url: string = 'http://localhost:3000/';
+  url: string = 'http://localhost:5194/';
 
   constructor(private http: HttpClient) {}
 

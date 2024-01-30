@@ -1,8 +1,9 @@
 # backend
 blood-pressure-be/node_modules/
 blood-pressure-be/Vernyomas_2018_2019_2020_2021_2022_2023.xlsx
-blood-pressure-be/chinook.db
+blood-pressure-be/*.db
 blood-pressure-be/cluster
+blood-pressure-be/frontend-build/
 
 # frontend
 blood-pressure-fe/node_modules/
