@@ -11,7 +11,7 @@ const sqlite3 = require("sqlite3").verbose();
 const app = express();
 const port = 5194;
 
-app.use("/", express.static(path.join(__dirname, "frontend-build", "browser")));
+//app.use("/", express.static(path.join(__dirname, "frontend-build", "browser")));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -243,9 +243,9 @@ app.get("/last-n-data/:n", (req, res, next) => {
   });
 });
 
-app.use((req, res, next) => {
+/*app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, "frontend-build", "browser", "index.html"));
-});
+});*/
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
