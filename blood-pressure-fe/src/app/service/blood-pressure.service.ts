@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BloodData } from '../model/blood-data';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class BloodPressureService {
-  url: string = 'http://localhost:5194/';
+  url: string = environment.API_URL;
 
   constructor(private http: HttpClient) {}
 

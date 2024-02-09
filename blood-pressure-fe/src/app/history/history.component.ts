@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-history',
@@ -53,12 +54,12 @@ export class HistoryComponent {
 
   changeData(year: number): void {
     this.http
-      .get<any>('http://localhost:5194/average/' + year)
+      .get<any>(`${environment.API_URL}average/` + year)
       .subscribe((data) => this.createChart(data));
   }
 
   changeFullYearData(year: number): void {
-    this.http.get<any>('http://localhost:5194/all-by-year/' + year).subscribe(
+    this.http.get<any>(`${environment.API_URL}all-by-year/` + year).subscribe(
       (
         data: {
           id: number;
@@ -119,7 +120,7 @@ export class HistoryComponent {
     this.http
       .get<
         { year: number; sysAvg: number; diaAvg: number; pulseAvg: number }[]
-      >('http://localhost:5194/average-by-year/')
+      >(`${environment.API_URL}average-by-year/`)
       .subscribe(
         (
           data: {
