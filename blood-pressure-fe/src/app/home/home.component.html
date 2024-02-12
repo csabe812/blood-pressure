@@ -10,4 +10,5 @@
             <button type="button" class="btn btn-primary w-100" routerLink="/last-ten">Last 10 data</button>
         </div>
     </div>
+    <div *ngIf="lastData$ | async as data">{{data.sys}} | {{data.dia}} | {{data.pulse}} | {{data.note}}</div>
 </div>

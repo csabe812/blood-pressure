@@ -212,7 +212,6 @@ app.get("/all-by-year/:year", (req, res, next) => {
           res.send("Error encountered while displaying");
           return console.error(err.message);
         }
-        console.log(row);
         data.push(row);
       },
       function (err, counter) {
