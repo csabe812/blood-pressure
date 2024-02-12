@@ -1,13 +1,19 @@
-import { createReducer } from "@ngrx/store";
+import { createReducer, on } from "@ngrx/store";
 import { BloodPressureType } from "./blood-pressure-type";
+import * as BloodPressureActions from "./blood-pressure.action";
 
 const initialState: BloodPressureType = {
-    sys: 100,
-    dia: 200,
-    pulse: 300,
-    note: "400"
+    sys: 0,
+    dia: 0,
+    pulse: 0,
+    other: ""
 };
 
 export const bloodPressureReducer = createReducer(
-    initialState
+    initialState,
+    on(BloodPressureActions.saveData, (state, { bloodPressure }) => {
+        return {
+            ...bloodPressure
+        }
+    })
 );

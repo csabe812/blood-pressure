@@ -1,12 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { BloodPressureService } from '../service/blood-pressure.service';
-import { Subscription } from 'rxjs';
-import { BloodData } from '../model/blood-data';
 import { HttpClientModule } from '@angular/common/http';
+import { Component, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription, tap } from 'rxjs';
+import { BloodData } from '../model/blood-data';
+import { BloodPressureService } from '../service/blood-pressure.service';
+import { saveData } from '../store/blood-pressure.action';
 
 @Component({
   selector: 'app-add-data',
@@ -26,7 +27,7 @@ export class AddDataComponent implements OnDestroy {
     other: new FormControl(''),
   });
 
-  constructor(private bpService: BloodPressureService) {}
+  constructor(private bpService: BloodPressureService, private store: Store) {}
 
   ngOnDestroy(): void {
     this.addDataSubscription?.unsubscribe();
@@ -42,6 +43,11 @@ export class AddDataComponent implements OnDestroy {
     };
     this.addDataSubscription = this.bpService
       .addData(data)
+      .pipe(
+        tap(()  => {
+          this.store.dispatch(saveData({bloodPressure: {...data}}));
+        })
+      )
       .subscribe((resp) => {
         this.form.reset();
       });
