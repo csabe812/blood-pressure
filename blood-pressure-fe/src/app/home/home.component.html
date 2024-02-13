@@ -1,14 +1,17 @@
 <div class="container p-3">
     <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-2 offset-md-5">
             <button type="button" class="btn btn-primary w-100" routerLink="/add">Add</button>
         </div>
-        <div class="col-md-6">
-            <button type="button" class="btn btn-primary w-100" routerLink="/history">History</button>
+        <div class="col-md-2 offset-md-5">
+            <button type="button" class="btn btn-secondary w-100" routerLink="/history">History</button>
         </div>
-        <div class="col-md-6">
-            <button type="button" class="btn btn-primary w-100" routerLink="/last-ten">Last 10 data</button>
+        <div class="col-md-2 offset-md-5">
+            <button type="button" class="btn btn-warning w-100" routerLink="/last-ten">Last 10 data</button>
         </div>
     </div>
-    <div *ngIf="lastData$ | async as data">{{data.sys}} | {{data.dia}} | {{data.pulse}} | {{data.note}}</div>
+    <ng-container *ngIf="lastData$ | async as data">
+        <div *ngIf="data.sys > 0&& data.dia > 0 && data.pulse > 0">{{data.sys}} | {{data.dia}} | {{data.pulse}} |
+            {{data.other}}</div>
+    </ng-container>
 </div>

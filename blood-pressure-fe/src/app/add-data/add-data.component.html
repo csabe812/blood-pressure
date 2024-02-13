@@ -1,25 +1,25 @@
 <div class="container p-3">
     <form class="row g-3" [formGroup]="form">
-        <div class="col-md-4">
+        <div class="col-md-4 offset-md-4">
           <label for="inputSys" class="form-label">Sys</label>
           <input type="number" class="form-control" id="sys" formControlName="sys">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 offset-md-4">
             <label for="inputDis" class="form-label">Dia</label>
             <input type="number" class="form-control" id="dia" formControlName="dia">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 offset-md-4">
             <label for="inputPulse" class="form-label">Pulse</label>
             <input type="number" class="form-control" id="pulse" formControlName="pulse">
         </div>
-        <div class="col-12">
+        <div class="col-md-4 offset-md-4">
           <label for="inputOther" class="form-label">Other</label>
-          <input type="text" class="form-control" id="other" formControlName="other">
+          <textarea class="form-control" formControlName="other" id="other" style="height: 120px"></textarea>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 offset-md-4">
           <button class="btn btn-secondary w-100" routerLink="/">Back</button>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 offset-md-4">
           <button type="submit" class="btn btn-primary w-100" (click)="saveData()" [disabled]="!form.valid">Save</button>
         </div>
       </form>
