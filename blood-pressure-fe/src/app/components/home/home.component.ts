@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { BloodPressureType } from '../store/blood-pressure-type';
+import { BloodPressureType } from '../../store/blood-pressure-type';
 @Component({
   selector: 'app-home',
   standalone: true,

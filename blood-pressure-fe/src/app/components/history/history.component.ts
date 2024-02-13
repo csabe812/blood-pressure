@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import Chart from 'chart.js/auto';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { environment } from '../../environments/environment';
+import Chart from 'chart.js/auto';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-history',

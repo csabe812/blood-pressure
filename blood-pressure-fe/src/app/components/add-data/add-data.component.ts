@@ -5,9 +5,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription, tap } from 'rxjs';
-import { BloodData } from '../model/blood-data';
-import { BloodPressureService } from '../service/blood-pressure.service';
-import { saveData } from '../store/blood-pressure.action';
+import { BloodData } from '../../models/blood-data';
+import { BloodPressureService } from '../../services/blood-pressure.service';
+import { saveData } from '../../store/blood-pressure.action';
 
 @Component({
   selector: 'app-add-data',

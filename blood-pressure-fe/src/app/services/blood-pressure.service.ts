@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BloodData } from '../model/blood-data';
 import { environment } from '../../environments/environment';
+import { BloodData } from '../models/blood-data';
 
 @Injectable()
 export class BloodPressureService {

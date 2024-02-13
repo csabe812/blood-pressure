@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Observable, of } from 'rxjs';
-import { BloodData } from '../model/blood-data';
-import { BloodPressureService } from '../service/blood-pressure.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { BloodData } from '../../models/blood-data';
+import { BloodPressureService } from '../../services/blood-pressure.service';
 
 @Component({
   selector: 'app-last-ten',

@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { AddDataComponent } from './add-data/add-data.component';
-import { HomeComponent } from './home/home.component';
-import { HistoryComponent } from './history/history.component';
-import { LastTenComponent } from './last-ten/last-ten.component';
+import { AddDataComponent } from './components/add-data/add-data.component';
+import { HistoryComponent } from './components/history/history.component';
+import { HomeComponent } from './components/home/home.component';
+import { LastTenComponent } from './components/last-ten/last-ten.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
