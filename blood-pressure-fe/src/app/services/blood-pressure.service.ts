@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BloodData } from '../models/blood-data';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BloodPressureService {
   url: string = environment.API_URL;
 

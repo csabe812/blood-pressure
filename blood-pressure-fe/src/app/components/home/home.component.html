@@ -10,8 +10,10 @@
             <button type="button" class="btn btn-warning w-100" routerLink="/last-ten">Last 10 data</button>
         </div>
     </div>
-    <ng-container *ngIf="lastData$ | async as data">
-        <div *ngIf="data.sys > 0&& data.dia > 0 && data.pulse > 0">{{data.sys}} | {{data.dia}} | {{data.pulse}} |
-            {{data.other}}</div>
+    <ng-container *ngIf="hasData$ | async as hasData">
+        <div *ngIf="lastData$ | async as data">
+            {{data.sys}} | {{data.dia}} | {{data.pulse}} |
+            {{data.other}}
+        </div>
     </ng-container>
 </div>

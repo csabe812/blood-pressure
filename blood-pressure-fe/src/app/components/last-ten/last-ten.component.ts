@@ -12,7 +12,6 @@ import { BloodPressureService } from '../../services/blood-pressure.service';
   imports: [CommonModule, AsyncPipe, HttpClientModule, RouterLink],
   templateUrl: './last-ten.component.html',
   styleUrl: './last-ten.component.scss',
-  providers: [BloodPressureService],
 })
 export class LastTenComponent implements OnInit {
   data$: Observable<BloodData[]> = of([]);

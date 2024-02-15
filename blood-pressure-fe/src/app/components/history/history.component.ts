@@ -105,6 +105,7 @@ export class HistoryComponent {
           },
 
           options: {
+            maintainAspectRatio: false,
             scales: {
               y: {
                 min: 50,
@@ -164,6 +165,7 @@ export class HistoryComponent {
             },
 
             options: {
+              maintainAspectRatio: false,
               scales: {
                 y: {
                   min: 50,
