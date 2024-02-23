@@ -2,9 +2,10 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { BloodData } from '../../models/blood-data';
-import { BloodPressureService } from '../../services/blood-pressure.service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectLastTenBloodPressureData } from '../../store/blood-pressure.selectors';
+import { Measurement } from '../../store/blood-pressure.state';
 
 @Component({
   selector: 'app-last-ten',
@@ -14,11 +15,11 @@ import { BloodPressureService } from '../../services/blood-pressure.service';
   styleUrl: './last-ten.component.scss',
 })
 export class LastTenComponent implements OnInit {
-  data$: Observable<BloodData[]> = of([]);
+  data$?: Observable<Measurement[]>;
 
-  constructor(private bpService: BloodPressureService) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.data$ = this.bpService.lastNData(10);
+    this.data$ = this.store.select(selectLastTenBloodPressureData);
   }
 }

@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideStore({ bloodPressure: bloodPressureReducer }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects(BloodPressureEffects),
+    provideEffects([BloodPressureEffects]),
     provideHttpClient(),
   ],
 };

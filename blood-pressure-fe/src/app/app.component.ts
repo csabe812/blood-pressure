@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadLastData } from './store/blood-pressure.actions';
-import { BloodPressureType } from './store/blood-pressure.state';
+import { init } from './store/blood-pressure.actions';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +11,10 @@ import { BloodPressureType } from './store/blood-pressure.state';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  constructor(private store: Store<{ bloodPressure: BloodPressureType }>) {
-    this.store.dispatch(loadLastData());
+export class AppComponent implements OnInit {
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(init());
   }
 }

@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { Subscription, tap } from 'rxjs';
 import { BloodData } from '../../models/blood-data';
 import { BloodPressureService } from '../../services/blood-pressure.service';
-import { saveData } from '../../store/blood-pressure.actions';
+import { saveMeasurement } from '../../store/blood-pressure.actions';
 
 @Component({
   selector: 'app-add-data',
@@ -49,7 +49,7 @@ export class AddDataComponent implements OnDestroy {
       .addData(data)
       .pipe(
         tap(() => {
-          this.store.dispatch(saveData({ bloodPressure: { ...data } }));
+          this.store.dispatch(saveMeasurement({ measurement: { ...data } }));
         })
       )
       .subscribe((resp) => {

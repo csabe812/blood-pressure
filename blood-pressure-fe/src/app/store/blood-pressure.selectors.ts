@@ -1,11 +1,15 @@
-import { createSelector } from '@ngrx/store';
-import { BloodPressureType } from './blood-pressure.state';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { BlooodPressureData } from './blood-pressure.state';
 
-export const selectBloodPressureData = (state: {
-  bloodPressure: BloodPressureType;
-}) => state.bloodPressure;
+export const selectBloodPressureFeature =
+  createFeatureSelector<BlooodPressureData>('bloodPressure');
 
-export const hasData = createSelector(
-  selectBloodPressureData,
-  (data) => data.sys > 0 && data.dia > 0 && data.pulse > 0
+export const selectLastBloodPressureData = createSelector(
+  selectBloodPressureFeature,
+  (state: BlooodPressureData) => state.lastBloodPressure
+);
+
+export const selectLastTenBloodPressureData = createSelector(
+  selectBloodPressureFeature,
+  (state: BlooodPressureData) => state.lastTenBloodPressureData
 );
