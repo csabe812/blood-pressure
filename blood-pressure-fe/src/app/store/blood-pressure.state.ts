@@ -1,14 +1,8 @@
-export interface Measurement {
-  sys: number;
-  dia: number;
-  pulse: number;
-  other: string;
-  recorded: Date;
-}
+import { BloodData } from '../models/blood-data';
 
 export interface BlooodPressureData {
-  lastBloodPressure: Measurement;
-  lastTenBloodPressureData: Measurement[];
+  lastBloodPressure: BloodData;
+  lastTenBloodPressureData: BloodData[];
 }
 
 export const initialState: BlooodPressureData = {

@@ -4,8 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { BloodData } from '../../models/blood-data';
 import { selectLastTenBloodPressureData } from '../../store/blood-pressure.selectors';
-import { Measurement } from '../../store/blood-pressure.state';
 
 @Component({
   selector: 'app-last-ten',
@@ -15,7 +15,7 @@ import { Measurement } from '../../store/blood-pressure.state';
   styleUrl: './last-ten.component.scss',
 })
 export class LastTenComponent implements OnInit {
-  data$?: Observable<Measurement[]>;
+  data$?: Observable<BloodData[]>;
 
   constructor(private store: Store) {}
 

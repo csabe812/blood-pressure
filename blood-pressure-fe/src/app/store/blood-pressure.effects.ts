@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
+import { BloodData } from '../models/blood-data';
 import { BloodPressureService } from '../services/blood-pressure.service';
-import { init, set } from './blood-pressure.actions';
-import { Measurement } from './blood-pressure.state';
+import { init, saveMeasurement, set } from './blood-pressure.actions';
 
 @Injectable()
 export class BloodPressureEffects {
@@ -13,7 +13,7 @@ export class BloodPressureEffects {
       switchMap(() => {
         return this.bloodPressureService.lastNData(10).pipe(
           map((resp) => {
-            let measurements: Measurement[] = [
+            let measurements: BloodData[] = [
               { dia: 0, sys: 0, pulse: 0, other: '', recorded: new Date() },
             ];
             if (!resp || resp.length === 0) {
@@ -26,6 +26,17 @@ export class BloodPressureEffects {
         );
       })
     )
+  );
+
+  saveMeasurement$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(saveMeasurement),
+        switchMap((d) => {
+          return this.bloodPressureService.addData(d.measurement);
+        })
+      ),
+    { dispatch: false }
   );
 
   constructor(

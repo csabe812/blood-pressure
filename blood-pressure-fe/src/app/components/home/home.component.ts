@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { BloodData } from '../../models/blood-data';
 import { selectLastBloodPressureData } from '../../store/blood-pressure.selectors';
-import { Measurement } from '../../store/blood-pressure.state';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -13,7 +13,7 @@ import { Measurement } from '../../store/blood-pressure.state';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  lastData$?: Observable<Measurement>;
+  lastData$?: Observable<BloodData>;
 
   constructor(private store: Store) {
     this.lastData$ = this.store.select(selectLastBloodPressureData);

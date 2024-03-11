@@ -1,15 +1,15 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createSelector } from '@ngrx/store';
 import { BlooodPressureData } from './blood-pressure.state';
 
-export const selectBloodPressureFeature =
-  createFeatureSelector<BlooodPressureData>('bloodPressure');
+export const selectData = (state: { bloodPressure: BlooodPressureData }) =>
+  state.bloodPressure;
 
 export const selectLastBloodPressureData = createSelector(
-  selectBloodPressureFeature,
+  selectData,
   (state: BlooodPressureData) => state.lastBloodPressure
 );
 
 export const selectLastTenBloodPressureData = createSelector(
-  selectBloodPressureFeature,
+  selectData,
   (state: BlooodPressureData) => state.lastTenBloodPressureData
 );

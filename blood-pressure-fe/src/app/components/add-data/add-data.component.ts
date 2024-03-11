@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { BloodData } from '../../models/blood-data';
 import { BloodPressureService } from '../../services/blood-pressure.service';
 import { saveMeasurement } from '../../store/blood-pressure.actions';
@@ -45,7 +45,8 @@ export class AddDataComponent implements OnDestroy {
       pulse: this.form.controls.pulse.value,
       other: this.form.controls.other.value,
     };
-    this.addDataSubscription = this.bpService
+    this.store.dispatch(saveMeasurement({ measurement: { ...data } }));
+    /*this.addDataSubscription = this.bpService
       .addData(data)
       .pipe(
         tap(() => {
@@ -54,6 +55,6 @@ export class AddDataComponent implements OnDestroy {
       )
       .subscribe((resp) => {
         this.form.reset();
-      });
+      });*/
   }
 }
