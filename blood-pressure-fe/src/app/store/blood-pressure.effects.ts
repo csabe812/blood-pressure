@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { BloodData } from '../models/blood-data';
 import { BloodPressureService } from '../services/blood-pressure.service';
-import { init, saveMeasurement, set } from './blood-pressure.actions';
+import {
+  init,
+  loadAverageData,
+  loadAverageDataFailed,
+  loadAverageDataSuccess,
+  loadDataByYear,
+  loadDataByYearFailed,
+  loadDataByYearSuccess,
+  saveMeasurement,
+  set,
+} from './blood-pressure.actions';
 
 @Injectable()
 export class BloodPressureEffects {
@@ -37,6 +47,30 @@ export class BloodPressureEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  loadAverageData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadAverageData),
+      switchMap(() => {
+        return this.bloodPressureService.averageByYear().pipe(
+          map((averageData) => loadAverageDataSuccess({ averageData })),
+          catchError((error) => of(loadAverageDataFailed({ error })))
+        );
+      })
+    )
+  );
+
+  loadDataByYear$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadDataByYear),
+      switchMap(({ year }) => {
+        return this.bloodPressureService.getDataByYear(year).pipe(
+          map((data) => loadDataByYearSuccess({ data })),
+          catchError((error) => of(loadDataByYearFailed({ error })))
+        );
+      })
+    )
   );
 
   constructor(

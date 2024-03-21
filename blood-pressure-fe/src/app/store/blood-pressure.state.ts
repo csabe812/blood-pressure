@@ -1,8 +1,11 @@
+import { AverageData } from '../models/average-data';
 import { BloodData } from '../models/blood-data';
 
 export interface BlooodPressureData {
   lastBloodPressure: BloodData;
   lastTenBloodPressureData: BloodData[];
+  averageData: AverageData[];
+  bloodDataByYear: BloodData[];
 }
 
 export const initialState: BlooodPressureData = {
@@ -14,4 +17,6 @@ export const initialState: BlooodPressureData = {
     recorded: new Date(),
   },
   lastTenBloodPressureData: [],
+  averageData: [],
+  bloodDataByYear: [],
 };

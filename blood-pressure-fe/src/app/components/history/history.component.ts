@@ -1,14 +1,21 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
 import Chart from 'chart.js/auto';
-import { environment } from '../../../environments/environment';
+import { Observable, tap } from 'rxjs';
+import { AverageData } from '../../models/average-data';
+import { BloodPressureService } from '../../services/blood-pressure.service';
+import {
+  selectAverageData,
+  selectAverageDataByYear,
+} from '../../store/blood-pressure.selectors';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterLink],
+  imports: [CommonModule, HttpClientModule, RouterLink, AsyncPipe],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss',
 })
@@ -16,20 +23,16 @@ export class HistoryComponent {
   title = 'blood-pressure-fe';
   chart!: Chart;
   years: number[] = [];
+  data$: Observable<AverageData[] | AverageData>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private store: Store, private bpService: BloodPressureService) {}
 
   ngOnInit(): void {
     this.createLineChart();
-    //this.http
-    //  .get<any>('http://localhost:3000/average')
-    //  .subscribe((data) => this.createChart(data));
   }
 
-  createChart(data: any) {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+  createChart(data: AverageData) {
+    this.chart?.destroy();
     this.chart = new Chart('canvas', {
       type: 'bar',
       data: {
@@ -53,52 +56,106 @@ export class HistoryComponent {
   }
 
   changeData(year: number): void {
-    this.http
+    /*this.http
       .get<any>(`${environment.API_URL}average/` + year)
-      .subscribe((data) => this.createChart(data));
+      .subscribe((data) => this.createChart(data));*/
+    this.data$ = this.store
+      .select(selectAverageDataByYear(year))
+      .pipe(tap((d: AverageData) => this.createChart(d)));
   }
 
   changeFullYearData(year: number): void {
-    this.http.get<any>(`${environment.API_URL}all-by-year/` + year).subscribe(
-      (
+    //this.store.dispatch(loadDataByYear({ year }));
+
+    this.bpService.getDataByYear(year).subscribe((data) => {
+      this.chart?.destroy();
+      this.chart = new Chart('canvas', {
+        type: 'line',
         data: {
-          id: number;
-          recorded: string;
-          other: string;
-          sys: number;
-          dia: number;
-          pulse: number;
-        }[]
-      ) => {
-        if (this.chart) {
-          this.chart.destroy();
-        }
+          labels: [...data]
+            .sort(
+              (a, b) =>
+                new Date(a.recorded).getTime() - new Date(b.recorded).getTime()
+            )
+            .map((a) => a.recorded),
+          datasets: [
+            {
+              label: 'Sys',
+              data: [...data]
+                .sort(
+                  (a, b) =>
+                    new Date(a.recorded).getTime() -
+                    new Date(b.recorded).getTime()
+                )
+                .map((m) => m.sys),
+              borderWidth: 1,
+            },
+            {
+              label: 'Dia',
+              data: [...data]
+                .sort(
+                  (a, b) =>
+                    new Date(a.recorded).getTime() -
+                    new Date(b.recorded).getTime()
+                )
+                .map((m) => m.dia),
+              borderWidth: 1,
+            },
+            {
+              label: 'Pulse',
+              data: [...data]
+                .sort(
+                  (a, b) =>
+                    new Date(a.recorded).getTime() -
+                    new Date(b.recorded).getTime()
+                )
+                .map((m) => m.pulse),
+              borderWidth: 1,
+            },
+          ],
+        },
+
+        options: {
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              min: 50,
+            },
+          },
+        },
+      });
+    });
+  }
+
+  createLineChart(): void {
+    this.data$ = this.store.select(selectAverageData).pipe(
+      tap((data: AverageData[]) => {
+        this.chart?.destroy();
+        this.years = data.map((m) => m.year).sort();
         this.chart = new Chart('canvas', {
           type: 'line',
           data: {
-            labels: data
-              .sort((a, b) => a.recorded.localeCompare(b.recorded))
-              .map((a) => a.recorded),
+            labels: data.map((m) => m.year).sort(),
             datasets: [
               {
-                label: 'Sys',
-                data: data
-                  .sort((a, b) => a.recorded.localeCompare(b.recorded))
-                  .map((m) => m.sys),
+                label: 'SysAvg',
+                data: [...data]
+                  .sort((a, b) => a.year - b.year)
+                  .map((m) => m.sysAvg),
                 borderWidth: 1,
               },
               {
-                label: 'Dia',
-                data: data
-                  .sort((a, b) => a.recorded.localeCompare(b.recorded))
-                  .map((m) => m.dia),
+                label: 'DiaAvg',
+                data: [...data]
+                  .sort((a, b) => a.year - b.year)
+                  .map((m) => m.diaAvg),
                 borderWidth: 1,
               },
               {
-                label: 'Pulse',
-                data: data
-                  .sort((a, b) => a.recorded.localeCompare(b.recorded))
-                  .map((m) => m.pulse),
+                label: 'PulseAvg',
+                data: [...data]
+                  .sort((a, b) => a.year - b.year)
+                  .map((m) => m.pulseAvg),
                 borderWidth: 1,
               },
             ],
@@ -113,67 +170,7 @@ export class HistoryComponent {
             },
           },
         });
-      }
+      })
     );
-  }
-
-  createLineChart(): void {
-    this.http
-      .get<
-        { year: number; sysAvg: number; diaAvg: number; pulseAvg: number }[]
-      >(`${environment.API_URL}average-by-year/`)
-      .subscribe(
-        (
-          data: {
-            year: number;
-            sysAvg: number;
-            diaAvg: number;
-            pulseAvg: number;
-          }[]
-        ) => {
-          if (this.chart) {
-            this.chart.destroy();
-          }
-          this.years = data.map((m) => m.year).sort();
-          this.chart = new Chart('canvas', {
-            type: 'line',
-            data: {
-              labels: data.map((m) => m.year).sort(),
-              datasets: [
-                {
-                  label: 'SysAvg',
-                  data: data
-                    .sort((a, b) => a.year - b.year)
-                    .map((m) => m.sysAvg),
-                  borderWidth: 1,
-                },
-                {
-                  label: 'DiaAvg',
-                  data: data
-                    .sort((a, b) => a.year - b.year)
-                    .map((m) => m.diaAvg),
-                  borderWidth: 1,
-                },
-                {
-                  label: 'PulseAvg',
-                  data: data
-                    .sort((a, b) => a.year - b.year)
-                    .map((m) => m.pulseAvg),
-                  borderWidth: 1,
-                },
-              ],
-            },
-
-            options: {
-              maintainAspectRatio: false,
-              scales: {
-                y: {
-                  min: 50,
-                },
-              },
-            },
-          });
-        }
-      );
   }
 }

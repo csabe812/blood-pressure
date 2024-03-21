@@ -1,4 +1,5 @@
 <div class="container p-3">
+  <ng-container *ngIf="data$ | async"></ng-container>
   <div class="d-flex">
     <canvas id="canvas" class="chart">{{chart}}</canvas>
   </div>

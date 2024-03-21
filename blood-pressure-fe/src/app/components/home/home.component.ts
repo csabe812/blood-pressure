@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -8,7 +8,7 @@ import { selectLastBloodPressureData } from '../../store/blood-pressure.selector
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, AsyncPipe],
+  imports: [CommonModule, RouterLink, AsyncPipe, DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

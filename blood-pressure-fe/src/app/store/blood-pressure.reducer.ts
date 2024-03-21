@@ -15,5 +15,17 @@ export const bloodPressureReducer = createReducer(
   on(BloodPressureActions.set, (state, { measurements }) => ({
     lastBloodPressure: measurements[0],
     lastTenBloodPressureData: measurements,
+    averageData: [],
+    bloodDataByYear: [],
+  })),
+  on(BloodPressureActions.loadAverageDataSuccess, (state, { averageData }) => ({
+    ...state,
+    averageData,
+  })),
+  on(BloodPressureActions.loadDataByYearSuccess, (state, { data }) => ({
+    ...state,
+    bloodDataByYear: data.sort(
+      (a, b) => new Date(a.recorded).getTime() - new Date(b.recorded).getTime()
+    ),
   }))
 );

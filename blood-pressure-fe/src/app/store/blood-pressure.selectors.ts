@@ -13,3 +13,18 @@ export const selectLastTenBloodPressureData = createSelector(
   selectData,
   (state: BlooodPressureData) => state.lastTenBloodPressureData
 );
+
+export const selectAverageData = createSelector(
+  selectData,
+  (state: BlooodPressureData) => state.averageData
+);
+
+export const selectAverageDataByYear = (year: number) =>
+  createSelector(selectData, (state: BlooodPressureData) =>
+    state.averageData.find((f) => f.year === year)
+  );
+
+export const selectYearData = createSelector(
+  selectData,
+  (state: BlooodPressureData) => state.bloodDataByYear
+);

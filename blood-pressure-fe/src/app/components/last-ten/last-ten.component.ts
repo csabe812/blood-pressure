@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -10,7 +10,7 @@ import { selectLastTenBloodPressureData } from '../../store/blood-pressure.selec
 @Component({
   selector: 'app-last-ten',
   standalone: true,
-  imports: [CommonModule, AsyncPipe, HttpClientModule, RouterLink],
+  imports: [CommonModule, AsyncPipe, HttpClientModule, RouterLink, DatePipe],
   templateUrl: './last-ten.component.html',
   styleUrl: './last-ten.component.scss',
 })

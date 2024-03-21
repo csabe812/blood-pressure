@@ -15,7 +15,7 @@
                 <tbody>
                     <tr *ngFor="let row of data; index as i">
                         <th scope="row">{{i+1}}</th>
-                        <td>{{row.recorded}}</td>
+                        <td>{{row.recorded | date: 'medium'}}</td>
                         <td>{{row.sys}}</td>
                         <td>{{row.dia}}</td>
                         <td>{{row.pulse}}</td>
