@@ -9,3 +9,7 @@ Go to the backend folder `cd blood-pressure-be` and install all dependencies wit
 # Setup frontend
 
 Go to the backend folder `cd blood-pressure-fe` and install all dependencies with `npm install`. If everything goes ok, you can run the frontend with `npm run start`. The frontend app will be running on port `4200`.
+
+# Notes
+
+Please keep in mind that I changed a `tsconfig.json` setting from `"strict": true` to `"strict": false`
