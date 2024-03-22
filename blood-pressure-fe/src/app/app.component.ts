@@ -2,7 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { init, loadAverageData } from './store/blood-pressure.actions';
+import {
+  init,
+  loadAverageData,
+  loadYears,
+} from './store/blood-pressure.actions';
 
 @Component({
   selector: 'app-root',
@@ -17,5 +21,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(init());
     this.store.dispatch(loadAverageData());
+    this.store.dispatch(loadYears());
   }
 }

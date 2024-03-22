@@ -28,3 +28,8 @@ export const selectYearData = createSelector(
   selectData,
   (state: BlooodPressureData) => state.bloodDataByYear
 );
+
+export const selectYears = createSelector(
+  selectData,
+  (state: BlooodPressureData) => state.years
+);

@@ -46,3 +46,15 @@ export const loadDataByYearFailed = createAction(
   '[Blood Pressure] Load Blood Data By Year Failed',
   props<{ error: any }>()
 );
+
+export const loadYears = createAction('[Blood Pressure] Load Years');
+
+export const loadYearsSuccess = createAction(
+  '[Blood Pressure] Load Years Success',
+  props<{ data: number[] }>()
+);
+
+export const loadYearsFailed = createAction(
+  '[Blood Pressure] Load Years Failed',
+  props<{ error: any }>()
+);

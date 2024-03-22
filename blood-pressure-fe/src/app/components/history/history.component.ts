@@ -13,6 +13,7 @@ import {
   selectAverageData,
   selectAverageDataByYear,
   selectYearData,
+  selectYears,
 } from '../../store/blood-pressure.selectors';
 import { createDiagram } from '../../utils/diagram-creator';
 
@@ -26,7 +27,7 @@ import { createDiagram } from '../../utils/diagram-creator';
 export class HistoryComponent {
   title = 'blood-pressure-fe';
   chart!: Chart;
-  years: number[] = [];
+  years$: Observable<number[]> = this.store.select(selectYears);
   data$: Observable<AverageData[] | AverageData | BloodData[]>;
 
   constructor(private store: Store, private bpService: BloodPressureService) {}
@@ -132,7 +133,6 @@ export class HistoryComponent {
     this.data$ = this.store.select(selectAverageData).pipe(
       tap((data: AverageData[]) => {
         this.chart?.destroy();
-        this.years = data.map((m) => m.year).sort();
         const labels = data.map((m) => m.year).sort();
         const datasets = [
           {

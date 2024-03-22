@@ -25,4 +25,8 @@ export class BloodPressureService {
   getDataByYear(year: number) {
     return this.http.get<BloodData[]>(`${this.url}all-by-year/${year}`);
   }
+
+  getYears() {
+    return this.http.get<number[]>(`${this.url}years`);
+  }
 }

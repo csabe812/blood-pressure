@@ -11,6 +11,9 @@ import {
   loadDataByYear,
   loadDataByYearFailed,
   loadDataByYearSuccess,
+  loadYears,
+  loadYearsFailed,
+  loadYearsSuccess,
   saveMeasurement,
   set,
 } from './blood-pressure.actions';
@@ -68,6 +71,18 @@ export class BloodPressureEffects {
         return this.bloodPressureService.getDataByYear(year).pipe(
           map((data) => loadDataByYearSuccess({ data })),
           catchError((error) => of(loadDataByYearFailed({ error })))
+        );
+      })
+    )
+  );
+
+  loadYears$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadYears),
+      switchMap(() => {
+        return this.bloodPressureService.getYears().pipe(
+          map((data) => loadYearsSuccess({ data })),
+          catchError((error) => of(loadYearsFailed({ error })))
         );
       })
     )

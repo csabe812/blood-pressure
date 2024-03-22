@@ -3,24 +3,25 @@
   <div class="d-flex">
     <canvas id="canvas" class="chart">{{chart}}</canvas>
   </div>
-  <div class="row g-1 mt-3">
-    <div class="col-12 text-center">
-      <p>Averages - Bar</p>
+  <ng-container *ngIf="years$ | async as years">
+    <div class="row g-1 mt-3">
+      <div class="col-12 text-center">
+        <p>Averages - Bar</p>
+      </div>
+      <div class="col-4" *ngFor="let i of years">
+        <button class="btn btn-primary w-100" (click)="changeData(i)">{{i}}</button>
+      </div>
     </div>
-    <div class="col-4" *ngFor="let i of years">
-      <button class="btn btn-primary w-100" (click)="changeData(i)">{{i}}</button>
-    </div>
-  </div>
 
-  <div class="row g-1 my-3">
-    <div class="col-12 text-center">
-      <p>Full data - Line</p>
+    <div class="row g-1 my-3">
+      <div class="col-12 text-center">
+        <p>Full data - Line</p>
+      </div>
+      <div class="col-4" *ngFor="let i of years">
+        <button class="btn btn-primary w-100" (click)="changeFullYearData(i)">{{i}}</button>
+      </div>
     </div>
-    <div class="col-4" *ngFor="let i of years">
-      <button class="btn btn-primary w-100" (click)="changeFullYearData(i)">{{i}}</button>
-    </div>
-  </div>
-
+  </ng-container>
   <div class="row g-1">
     <button class="btn btn-secondary w-100" routerLink="/">Back</button>
   </div>

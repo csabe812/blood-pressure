@@ -6,6 +6,7 @@ export interface BlooodPressureData {
   lastTenBloodPressureData: BloodData[];
   averageData: AverageData[];
   bloodDataByYear: BloodData[];
+  years: number[];
 }
 
 export const initialState: BlooodPressureData = {
@@ -19,4 +20,5 @@ export const initialState: BlooodPressureData = {
   lastTenBloodPressureData: [],
   averageData: [],
   bloodDataByYear: [],
+  years: [],
 };
