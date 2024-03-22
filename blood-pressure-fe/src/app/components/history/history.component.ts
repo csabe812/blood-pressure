@@ -38,10 +38,10 @@ export class HistoryComponent {
 
   createChart(data: AverageData) {
     this.chart?.destroy();
-    const labels = ['Sys', 'Dia', 'Pulse'];
+    const labels = ['Systolic', 'Diastolic', 'Pulse'];
     const datasets = [
       {
-        label: 'Averages',
+        label: 'Average',
         data: [data.sysAvg, data.diaAvg, data.pulseAvg],
         borderWidth: 1,
       },
@@ -78,7 +78,7 @@ export class HistoryComponent {
           .map((a) => a.recorded);
         const datasets = [
           {
-            label: 'Sys',
+            label: 'Systolic',
             data: [...data]
               .sort(
                 (a, b) =>
@@ -89,7 +89,7 @@ export class HistoryComponent {
             borderWidth: 1,
           },
           {
-            label: 'Dia',
+            label: 'Diastolic',
             data: [...data]
               .sort(
                 (a, b) =>
@@ -136,21 +136,21 @@ export class HistoryComponent {
         const labels = data.map((m) => m.year).sort();
         const datasets = [
           {
-            label: 'SysAvg',
+            label: 'Systolic (average)',
             data: [...data]
               .sort((a, b) => a.year - b.year)
               .map((m) => m.sysAvg),
             borderWidth: 1,
           },
           {
-            label: 'DiaAvg',
+            label: 'Diastolic (average)',
             data: [...data]
               .sort((a, b) => a.year - b.year)
               .map((m) => m.diaAvg),
             borderWidth: 1,
           },
           {
-            label: 'PulseAvg',
+            label: 'Pulse (average)',
             data: [...data]
               .sort((a, b) => a.year - b.year)
               .map((m) => m.pulseAvg),

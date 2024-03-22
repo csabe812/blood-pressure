@@ -23,7 +23,7 @@ export const lineOptions = (ranges: { minValue: number; maxValue: number }) => {
     maintainAspectRatio: false,
     scales: {
       y: {
-        min: Math.ceil((ranges.minValue - 20) / 10) * 10,
+        min: Math.ceil((ranges.minValue - 10) / 10) * 10,
         max: Math.ceil((ranges.maxValue + 10) / 10) * 10,
       },
     },
