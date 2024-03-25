@@ -13,3 +13,5 @@ Go to the backend folder `cd blood-pressure-fe` and install all dependencies wit
 # Notes
 
 Please keep in mind that I changed a `tsconfig.json` setting from `"strict": true` to `"strict": false`
+
+# Others
