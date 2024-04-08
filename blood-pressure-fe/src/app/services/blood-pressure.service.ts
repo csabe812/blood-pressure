@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { AverageData } from '../models/average-data';
 import { BloodData } from '../models/blood-data';
 
 @Injectable({ providedIn: 'root' })
 export class BloodPressureService {
-  url: string = environment.API_URL;
+  http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  url: string = environment.API_URL;
 
   addData(data: BloodData) {
     return this.http.post<BloodData>(this.url + 'add', data);

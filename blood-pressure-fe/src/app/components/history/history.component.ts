@@ -1,6 +1,6 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import Chart from 'chart.js/auto';
@@ -25,12 +25,13 @@ import { createDiagram } from '../../utils/diagram-creator';
   styleUrl: './history.component.scss',
 })
 export class HistoryComponent {
+  store = inject(Store);
+  bpService = inject(BloodPressureService);
+
   title = 'blood-pressure-fe';
   chart!: Chart;
   years$: Observable<number[]> = this.store.select(selectYears);
   data$: Observable<AverageData[] | AverageData | BloodData[]>;
-
-  constructor(private store: Store, private bpService: BloodPressureService) {}
 
   ngOnInit(): void {
     this.createLineChart();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import {
@@ -16,7 +16,7 @@ import {
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  constructor(private store: Store) {}
+  store = inject(Store);
 
   ngOnInit(): void {
     this.store.dispatch(init());
