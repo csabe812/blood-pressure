@@ -4,6 +4,7 @@ import { catchError, map, of, switchMap } from 'rxjs';
 import { BloodData } from '../models/blood-data';
 import { BloodPressureService } from '../services/blood-pressure.service';
 import {
+  addIdToLastMeasurement,
   init,
   loadAverageData,
   loadAverageDataFailed,
@@ -16,6 +17,9 @@ import {
   loadYearsSuccess,
   saveMeasurement,
   set,
+  updateMeasurement,
+  updateMeasurementFailed,
+  updateMeasurementSuccess,
 } from './blood-pressure.actions';
 
 @Injectable()
@@ -41,15 +45,17 @@ export class BloodPressureEffects {
     )
   );
 
-  saveMeasurement$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(saveMeasurement),
-        switchMap((d) => {
-          return this.bloodPressureService.addData(d.measurement);
-        })
-      ),
-    { dispatch: false }
+  saveMeasurement$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(saveMeasurement),
+      switchMap((d) => {
+        return this.bloodPressureService.addData(d.measurement).pipe(
+          map((resp) => {
+            return addIdToLastMeasurement({ data: resp.id });
+          })
+        );
+      })
+    )
   );
 
   loadAverageData$ = createEffect(() =>
@@ -83,6 +89,18 @@ export class BloodPressureEffects {
         return this.bloodPressureService.getYears().pipe(
           map((data) => loadYearsSuccess({ data })),
           catchError((error) => of(loadYearsFailed({ error })))
+        );
+      })
+    )
+  );
+
+  updateMeasurement$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateMeasurement),
+      switchMap((d) => {
+        return this.bloodPressureService.updateData(d.id, d.measurement).pipe(
+          map((data) => updateMeasurementSuccess({ data })),
+          catchError((error) => of(updateMeasurementFailed({ error })))
         );
       })
     )

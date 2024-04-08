@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,14 +20,16 @@ import { saveMeasurement } from '../../store/blood-pressure.actions';
   styleUrl: './add-data.component.scss',
 })
 export class AddDataComponent {
+  router = inject(Router);
+  store = inject(Store);
+
   form: FormGroup = new FormGroup({
     sys: new FormControl('', [Validators.required]),
     dia: new FormControl('', [Validators.required]),
     pulse: new FormControl('', [Validators.required]),
     other: new FormControl(''),
+    mood: new FormControl(''),
   });
-
-  constructor(private store: Store, private router: Router) {}
 
   saveData(): void {
     const data: BloodData = {
@@ -36,6 +38,7 @@ export class AddDataComponent {
       dia: this.form.controls.dia.value,
       pulse: this.form.controls.pulse.value,
       other: this.form.controls.other.value,
+      mood: this.form.controls.mood.value,
     };
     this.store.dispatch(saveMeasurement({ measurement: { ...data } }));
     this.router.navigate(['/']);

@@ -45,7 +45,7 @@ app.get("/import-data", (req, res, next) => {
   db.serialize(() => {
     //db.run("DROP TABLE IF EXISTS bloodpressure");
     db.run(
-      "CREATE TABLE IF NOT EXISTS bloodpressure([id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,[recorded] NVARCHAR(120), [sys] INT, [dia] INT, [pulse] INT, [other] NVARCHAR(200))"
+      "CREATE TABLE IF NOT EXISTS bloodpressure([id] INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,[recorded] NVARCHAR(120), [sys] INT, [dia] INT, [pulse] INT, [other] NVARCHAR(200), [mood] NVARCHAR(200))"
     );
     let dataRows = [];
     fs.createReadStream("./blood-pressure-2023-11-12.csv")
@@ -55,7 +55,7 @@ app.get("/import-data", (req, res, next) => {
         const timeArr = splitted[0].split(":");
         const dateTime = new Date(row[0]);
         dateTime.setHours(timeArr[0], timeArr[1]);
-        const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other) VALUES  ('${moment(
+        const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other, mood) VALUES  ('${moment(
           new Date(dateTime)
         ).format("YYYY-MM-DD HH:mm")}', ${+row[2]},${+row[3]},${+row[4]},'${
           row[5]
@@ -67,6 +67,7 @@ app.get("/import-data", (req, res, next) => {
           dia: +row[3],
           pulse: +row[4],
           other: row[5],
+          mood: row[6],
         });
       })
       .on("end", () => {
@@ -84,9 +85,51 @@ app.post("/add", (req, res, next) => {
     const dia = req.body.dia;
     const pulse = req.body.pulse;
     const other = req.body.other;
-    const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other) VALUES  ('${date}', ${sys},${dia},${pulse},'${other}')`;
-    db.run(sql);
-    res.status(200).send({ text: "Added" });
+    const mood = req.body.mood;
+    const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other, mood) VALUES  ('${date}', ${sys},${dia},${pulse},'${other}','${mood}')`;
+    db.run(sql, (err, row) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      db.get("SELECT last_insert_rowid() as id", (err, row) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+
+        const lastInsertedId = row.id;
+
+        db.get(
+          "SELECT * FROM bloodpressure WHERE id = ?",
+          [lastInsertedId],
+          (err, row) => {
+            if (err) {
+              return res.status(500).json({ error: err.message });
+            }
+
+            res.json(row); // Return the last inserted row's data
+          }
+        );
+      });
+    });
+  });
+});
+
+app.patch("/update/:id", (req, res) => {
+  const db = new sqlite3.Database("./blood-pressure.db");
+  db.serialize(() => {
+    const { id } = req.params;
+    const { recorded, sys, dia, pulse, other, mood } = req.body;
+
+    const sql =
+      "UPDATE bloodpressure SET recorded = ?, sys = ?, dia = ?, pulse = ?, other = ?, mood = ? WHERE id = ?";
+
+    db.run(sql, [recorded, sys, dia, pulse, other, mood, id], function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: "Bloodpressure updated successfully" });
+    });
   });
 });
 
@@ -170,7 +213,11 @@ app.get("/average-by-year", (req, res, next) => {
       },
       function (err, counter) {
         let resp = [];
-        let currentYear = data.map(m => new Date(m.recorded)).sort((a, b) => b - a).at(0).getFullYear();
+        let currentYear = data
+          .map((m) => new Date(m.recorded))
+          .sort((a, b) => b - a)
+          .at(0)
+          .getFullYear();
         let yearData = data.filter((f) =>
           f.recorded.startsWith("" + currentYear)
         );
@@ -257,6 +304,27 @@ app.get("/years", (req, res, next) => {
       },
       function (err, counter) {
         res.status(200).send(data);
+        db.close();
+      }
+    );
+  });
+});
+
+app.get("/get-by-id/:id", (req, res, next) => {
+  const db = new sqlite3.Database("./blood-pressure.db");
+  db.serialize(() => {
+    let data = {};
+    db.each(
+      `select * from bloodpressure where id = ${req.params.id}`,
+      function (err, row) {
+        if (err) {
+          res.send("Error encountered while displaying");
+          return console.error(err.message);
+        }
+        data = { ...row };
+      },
+      function (err, counter) {
+        res.status(200).send({ ...data });
         db.close();
       }
     );

@@ -49,5 +49,28 @@ export const bloodPressureReducer = createReducer(
   on(BloodPressureActions.loadYearsSuccess, (state, { data }) => ({
     ...state,
     years: data,
+  })),
+  on(BloodPressureActions.addIdToLastMeasurement, (state, { data }) => ({
+    ...state,
+    lastBloodPressure: { ...state.lastBloodPressure, id: data },
+    lastTenBloodPressureData: [
+      ...state.lastTenBloodPressureData.map((m) => {
+        if (!m.id) return { ...m, id: data };
+        return m;
+      }),
+    ],
+  })),
+  on(BloodPressureActions.updateMeasurement, (state, { id, measurement }) => ({
+    ...state,
+    lastTenBloodPressureData: [
+      ...state.lastTenBloodPressureData.map((m) => {
+        if (id === m.id) return { ...measurement, id };
+        return m;
+      }),
+    ],
+    lastBloodPressure:
+      state.lastBloodPressure.id === id
+        ? { ...measurement }
+        : { ...state.lastBloodPressure },
   }))
 );

@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let row of data; index as i">
-                        <th scope="row">{{i+1}}</th>
+                        <th scope="row"><a class="btn btn-link" routerLink="/edit-template/{{row.id}}">{{i+1}} ({{row.id}})</a></th>
                         <td>{{row.recorded | date: 'medium'}}</td>
                         <td>{{row.sys}}</td>
                         <td>{{row.dia}}</td>

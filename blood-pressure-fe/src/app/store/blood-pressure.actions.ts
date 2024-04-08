@@ -58,3 +58,23 @@ export const loadYearsFailed = createAction(
   '[Blood Pressure] Load Years Failed',
   props<{ error: any }>()
 );
+
+export const addIdToLastMeasurement = createAction(
+  '[Blood Pressure] Add Id To Last Measurement',
+  props<{ data: number }>()
+);
+
+export const updateMeasurement = createAction(
+  '[Blood Pressure] Update Measurement',
+  props<{ id: number; measurement: BloodData }>()
+);
+
+export const updateMeasurementSuccess = createAction(
+  '[Blood Pressure] Update Measurement Success',
+  props<{ data: any }>()
+);
+
+export const updateMeasurementFailed = createAction(
+  '[Blood Pressure] Update Measurement Failed',
+  props<{ error: any }>()
+);

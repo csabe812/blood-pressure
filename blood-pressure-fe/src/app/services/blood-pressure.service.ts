@@ -14,6 +14,14 @@ export class BloodPressureService {
     return this.http.post<BloodData>(this.url + 'add', data);
   }
 
+  updateData(id: number, data: BloodData) {
+    return this.http.patch(this.url + `update/${id}`, data);
+  }
+
+  getById(id: number) {
+    return this.http.get<BloodData>(this.url + `get-by-id/${id}`);
+  }
+
   lastNData(n: number) {
     return this.http.get<BloodData[]>(this.url + `last-n-data/${n}`);
   }
