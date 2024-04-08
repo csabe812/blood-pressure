@@ -1,12 +1,16 @@
-import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { BloodPressureService } from '../service/blood-pressure.service';
-import { Subscription } from 'rxjs';
-import { BloodData } from '../model/blood-data';
 import { HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { BloodData } from '../../models/blood-data';
+import { saveMeasurement } from '../../store/blood-pressure.actions';
 
 @Component({
   selector: 'app-add-data',
@@ -14,11 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [CommonModule, ReactiveFormsModule, RouterLink, HttpClientModule],
   templateUrl: './add-data.component.html',
   styleUrl: './add-data.component.scss',
-  providers: [BloodPressureService],
 })
-export class AddDataComponent implements OnDestroy {
-  addDataSubscription?: Subscription;
-
+export class AddDataComponent {
   form: FormGroup = new FormGroup({
     sys: new FormControl('', [Validators.required]),
     dia: new FormControl('', [Validators.required]),
@@ -26,11 +27,7 @@ export class AddDataComponent implements OnDestroy {
     other: new FormControl(''),
   });
 
-  constructor(private bpService: BloodPressureService) {}
-
-  ngOnDestroy(): void {
-    this.addDataSubscription?.unsubscribe();
-  }
+  constructor(private store: Store, private router: Router) {}
 
   saveData(): void {
     const data: BloodData = {
@@ -40,10 +37,7 @@ export class AddDataComponent implements OnDestroy {
       pulse: this.form.controls.pulse.value,
       other: this.form.controls.other.value,
     };
-    this.addDataSubscription = this.bpService
-      .addData(data)
-      .subscribe((resp) => {
-        this.form.reset();
-      });
+    this.store.dispatch(saveMeasurement({ measurement: { ...data } }));
+    this.router.navigate(['/']);
   }
 }

@@ -1,0 +1,37 @@
+<div class="container p-3">
+    <div class="row g-3">
+        <div class="col-md-2 offset-md-5">
+            <button type="button" class="btn btn-primary w-100" routerLink="/add">Add</button>
+        </div>
+        <div class="col-md-2 offset-md-5">
+            <button type="button" class="btn btn-secondary w-100" routerLink="/history">History</button>
+        </div>
+        <div class="col-md-2 offset-md-5">
+            <button type="button" class="btn btn-warning w-100" routerLink="/last-ten">Last 10 data</button>
+        </div>
+    </div>
+    <div *ngIf="lastData$ | async as data">
+        <div class="m-3 p-1">
+            <div class="row">
+                <div class="col-6 col-md-1 offset-md-5 fw-bold">Recorded</div>
+                <div class="col-6 col-md-3">{{data.recorded | date : 'medium'}}</div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-1 offset-md-5 fw-bold">Sys</div>
+                <div class="col-6 col-md-3">{{data.sys}}</div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-1 offset-md-5 fw-bold">Dia</div>
+                <div class="col-6 col-md-3">{{data.dia}}</div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-1 offset-md-5 fw-bold">Pulse</div>
+                <div class="col-6 col-md-3">{{data.pulse}}</div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-1 offset-md-5 fw-bold">Other</div>
+                <div class="col-6 col-md-3">{{data.other}}</div>
+            </div>
+        </div>
+    </div>
+</div>

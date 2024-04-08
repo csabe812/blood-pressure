@@ -170,7 +170,7 @@ app.get("/average-by-year", (req, res, next) => {
       },
       function (err, counter) {
         let resp = [];
-        let currentYear = new Date().getFullYear();
+        let currentYear = data.map(m => new Date(m.recorded)).sort((a, b) => b - a).at(0).getFullYear();
         let yearData = data.filter((f) =>
           f.recorded.startsWith("" + currentYear)
         );
@@ -212,7 +212,6 @@ app.get("/all-by-year/:year", (req, res, next) => {
           res.send("Error encountered while displaying");
           return console.error(err.message);
         }
-        console.log(row);
         data.push(row);
       },
       function (err, counter) {
@@ -234,6 +233,27 @@ app.get("/last-n-data/:n", (req, res, next) => {
           return console.error(err.message);
         }
         data.push(row);
+      },
+      function (err, counter) {
+        res.status(200).send(data);
+        db.close();
+      }
+    );
+  });
+});
+
+app.get("/years", (req, res, next) => {
+  const db = new sqlite3.Database("./blood-pressure.db");
+  db.serialize(() => {
+    const data = [];
+    db.each(
+      `SELECT DISTINCT strftime('%Y', recorded) AS year FROM bloodpressure`,
+      function (err, row) {
+        if (err) {
+          res.send("Error encountered while displaying");
+          return console.error(err.message);
+        }
+        data.push(+row.year);
       },
       function (err, counter) {
         res.status(200).send(data);
