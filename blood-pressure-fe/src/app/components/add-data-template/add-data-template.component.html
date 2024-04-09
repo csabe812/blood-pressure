@@ -1,7 +1,7 @@
 <div class="container mt-2" *ngIf="model$ | async as model">
-    <h1>Add Template-driven data</h1>
-    <form (ngSubmit)="onSubmit()" #bloodDataForm="ngForm">
-        <div class="form-group">
+    <form class="row g-3" (ngSubmit)="onSubmit()" #bloodDataForm="ngForm">
+        <h1 class="text-center">Add Template-driven data</h1>
+        <div class="form-group col-md-4 offset-md-4">
             <label for="sys">Sys</label>
             <input type="number" class="form-control" id="sys" required [(ngModel)]="model.sys" name="sys"
                 #sys="ngModel" [ngClass]="{ 'is-invalid': (submitted || sys?.touched) && sys?.invalid }" min="50" max="250">
@@ -15,7 +15,7 @@
                 Maximum value is (250).
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-4 offset-md-4">
             <label for="dia">Dia</label>
             <input type="number" class="form-control" id="dia" required [(ngModel)]="model.dia" name="dia"
                 #dia="ngModel" [ngClass]="{ 'is-invalid': (submitted || dia?.touched) && dia?.invalid }" min="20" max="200">
@@ -29,7 +29,7 @@
                 Maximum value is (200).
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-4 offset-md-4">
             <label for="pulse">Pulse</label>
             <input type="number" class="form-control" id="pulse" required [(ngModel)]="model.pulse" name="pulse"
                 #pulse="ngModel" [ngClass]="{ 'is-invalid': (submitted || pulse?.touched) && pulse?.invalid }" min="20" max="220">
@@ -43,11 +43,11 @@
                 Maximum value is (220).
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-4 offset-md-4">
             <label for="other">Other</label>
             <input type="text" class="form-control" id="other" [(ngModel)]="model.other" name="other" #other="ngModel">
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-4 offset-md-4">
             <label for="mood">Mood</label>
             <select class="form-select" id="mood" [(ngModel)]="model.mood" name="mood" #mood="ngModel">
                 <option *ngFor="let mod of moods" [value]="mod">{{mod}}</option>
@@ -56,8 +56,13 @@
                 Mood is required
             </div>
         </div>
-
-        <button class="btn btn-secondary w-100 mt-3" routerLink="/">Back</button>
-        <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+        <div class="col-md-4 offset-md-4">
+            <button class="btn btn-secondary w-100 mt-3" routerLink="/">Back</button>
+            <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+            <!--button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                <span role="status">Loading...</span>
+            </button-->
+        </div>
     </form>
 </div>
