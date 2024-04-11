@@ -1,0 +1,65 @@
+<div class="container mt-2">
+    <form [formGroup]="bloodDataForm" (ngSubmit)="onSubmit()">
+        <h1 class="text-center">Add Reactive Form (dynamic) data</h1>
+        <div formArrayName="data">
+            <div class="row g-3 my-2"
+                *ngFor="let bloodData of bloodDataForm.controls.data.controls; let dataIdx = index">
+                <div class="col-md-4 offset-md-4 border border-secondary">
+                    <div class="d-flex justify-content-between my-1">
+                        <h3>Data idx: {{dataIdx}}</h3>
+                        <button class="btn btn-danger" (click)="onDeleteDataById(dataIdx)">X</button>
+                    </div>
+                    <div class="mb-2" [formGroupName]="dataIdx">
+                        <div class="form-group">
+                            <label for="sys">Sys {{dataIdx}}</label>
+                            <input type="number" class="form-control" id="sys" formControlName="sys"
+                                [ngClass]="{ 'is-invalid': (submitted || bloodData.controls.sys.touched) && bloodData.controls.sys.invalid }">
+                            <div *ngIf="bloodData.controls.sys.errors" class="invalid-feedback">
+                                <div *ngIf="bloodData.controls.sys.errors.required">Sys is required</div>
+                                <div *ngIf="bloodData.controls.sys.errors.min">Minimum value is (50).</div>
+                                <div *ngIf="bloodData.controls.sys.errors.max">Maximum value is (250).</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dia">Dia</label>
+                            <input type="number" class="form-control" id="dia" formControlName="dia"
+                                [ngClass]="{ 'is-invalid': (submitted || bloodData.controls.dia.touched) && bloodData.controls.dia.invalid }">
+                            <div *ngIf="bloodData.controls.dia.errors" class="invalid-feedback">
+                                <div *ngIf="bloodData.controls.dia.errors.required">Dia is required</div>
+                                <div *ngIf="bloodData.controls.dia.errors.min">Minimum value is (20).</div>
+                                <div *ngIf="bloodData.controls.dia.errors.max">Maximum value is (200).</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pulse">Pulse</label>
+                            <input type="number" class="form-control" id="pulse" formControlName="pulse"
+                                [ngClass]="{ 'is-invalid': (submitted || bloodData.controls.pulse.touched) && bloodData.controls.pulse.invalid }">
+                            <div *ngIf="bloodData.controls.pulse.errors" class="invalid-feedback">
+                                <div *ngIf="bloodData.controls.pulse.errors.required">Pulse is required</div>
+                                <div *ngIf="bloodData.controls.pulse.errors.min">Minimum value is (20).</div>
+                                <div *ngIf="bloodData.controls.pulse.errors.max">Maximum value is (220).</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="other">Other</label>
+                            <textarea class="form-control" id="other" formControlName="other"
+                                style="height: 120px"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="mood">Mood</label>
+                            <select class="form-select" id="mood" formControlName="mood">
+                                <option *ngFor="let mod of moods" [value]="mod">{{mod}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+                    <button type="button" class="btn btn-success w-100" (click)="onAddNewData()">Add new data</button>
+                    <button type="submit" class="btn btn-primary w-100 mt-2" (click)="onSubmit()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
