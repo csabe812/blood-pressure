@@ -14,11 +14,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { BloodData } from '../../models/blood-data';
 import { BloodPressureService } from '../../services/blood-pressure.service';
-import {
-  init,
-  loadAverageData,
-  loadYears,
-} from '../../store/blood-pressure.actions';
+import { saveMeasurementArray } from '../../store/blood-pressure.actions';
 
 type FormBloodData = FormGroup<{
   recorded: FormControl<Date>;
@@ -88,18 +84,9 @@ export class AddDataReactiveComponent implements OnDestroy {
         ...i,
       });
     }
-    // TODO: state management
-    this.addSetOfDataSubscription = this.bloodPressureService
-      .addDataArray(bloodDataArray)
-      .subscribe((resp) => {
-        console.log(resp);
-        this.submitted = false;
-        this.bloodDataForm.controls.data.clear();
-
-        this.store.dispatch(init());
-        this.store.dispatch(loadAverageData());
-        this.store.dispatch(loadYears());
-      });
+    this.store.dispatch(saveMeasurementArray({ measurements: bloodDataArray }));
+    this.submitted = false;
+    this.bloodDataForm.controls.data.clear();
   }
 
   onDeleteDataById(idx: number) {

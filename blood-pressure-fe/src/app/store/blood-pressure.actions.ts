@@ -78,3 +78,18 @@ export const updateMeasurementFailed = createAction(
   '[Blood Pressure] Update Measurement Failed',
   props<{ error: any }>()
 );
+
+export const saveMeasurementArray = createAction(
+  '[Blood Pressure] Save Measurement Array',
+  props<{ measurements: BloodData[] }>()
+);
+
+export const saveMeasurementArraySuccess = createAction(
+  '[Blood Pressure] Save Measurement Array Success',
+  props<{ data: any }>()
+);
+
+export const saveMeasurementArrayFailed = createAction(
+  '[Blood Pressure] Save Measurement Array Failed',
+  props<{ error: any }>()
+);

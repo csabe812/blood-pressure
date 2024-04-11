@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { BloodData } from '../models/blood-data';
 import { BloodPressureService } from '../services/blood-pressure.service';
@@ -16,6 +17,9 @@ import {
   loadYearsFailed,
   loadYearsSuccess,
   saveMeasurement,
+  saveMeasurementArray,
+  saveMeasurementArrayFailed,
+  saveMeasurementArraySuccess,
   set,
   updateMeasurement,
   updateMeasurementFailed,
@@ -106,7 +110,25 @@ export class BloodPressureEffects {
     )
   );
 
+  saveMeasurementArray$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(saveMeasurementArray),
+      switchMap((d) => {
+        return this.bloodPressureService.addDataArray(d.measurements).pipe(
+          map((data) => {
+            this.store.dispatch(init());
+            this.store.dispatch(loadAverageData());
+            this.store.dispatch(loadYears());
+            return saveMeasurementArraySuccess({ data });
+          }),
+          catchError((error) => of(saveMeasurementArrayFailed({ error })))
+        );
+      })
+    )
+  );
+
   constructor(
+    private store: Store,
     private actions$: Actions,
     private bloodPressureService: BloodPressureService
   ) {}
