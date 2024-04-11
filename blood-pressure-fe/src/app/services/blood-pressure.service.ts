@@ -14,6 +14,10 @@ export class BloodPressureService {
     return this.http.post<BloodData>(this.url + 'add', data);
   }
 
+  addDataArray(data: BloodData[]) {
+    return this.http.post<string>(this.url + 'add-data-array', data);
+  }
+
   updateData(id: number, data: BloodData) {
     return this.http.patch(this.url + `update/${id}`, data);
   }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -9,6 +9,16 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { BloodData } from '../../models/blood-data';
+import { BloodPressureService } from '../../services/blood-pressure.service';
+import {
+  init,
+  loadAverageData,
+  loadYears,
+} from '../../store/blood-pressure.actions';
 
 type FormBloodData = FormGroup<{
   recorded: FormControl<Date>;
@@ -26,17 +36,20 @@ type Form = FormGroup<{
 @Component({
   selector: 'app-add-data-reactive',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './add-data-reactive.component.html',
   styleUrl: './add-data-reactive.component.scss',
 })
-export class AddDataReactiveComponent {
+export class AddDataReactiveComponent implements OnDestroy {
   fb = inject(FormBuilder);
+  bloodPressureService = inject(BloodPressureService);
+  store = inject(Store);
   bloodDataForm: Form = this.fb.group({
     data: this.fb.array<FormBloodData>([this.generateFormBloodData()]),
   });
   moods = ['Good', 'Average', 'Bad'];
   submitted = false;
+  addSetOfDataSubscription: Subscription;
 
   generateFormBloodData(): FormBloodData {
     return this.fb.group({
@@ -55,9 +68,9 @@ export class AddDataReactiveComponent {
         Validators.min(20),
         Validators.max(220),
       ]),
-      other: '',
-      mood: '',
-      recorded: new Date(),
+      other: new FormControl(''),
+      mood: new FormControl(''),
+      recorded: new FormControl(new Date()),
     });
   }
 
@@ -68,11 +81,33 @@ export class AddDataReactiveComponent {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.bloodDataForm.getRawValue());
+    if (this.bloodDataForm.invalid) return;
+    const bloodDataArray: BloodData[] = [];
+    for (let i of this.bloodDataForm.getRawValue().data) {
+      bloodDataArray.push({
+        ...i,
+      });
+    }
+    // TODO: state management
+    this.addSetOfDataSubscription = this.bloodPressureService
+      .addDataArray(bloodDataArray)
+      .subscribe((resp) => {
+        console.log(resp);
+        this.submitted = false;
+        this.bloodDataForm.controls.data.clear();
+
+        this.store.dispatch(init());
+        this.store.dispatch(loadAverageData());
+        this.store.dispatch(loadYears());
+      });
   }
 
   onDeleteDataById(idx: number) {
     this.bloodDataForm.controls.data.removeAt(idx);
     if (this.bloodDataForm.controls.data.length === 0) this.submitted = false;
+  }
+
+  ngOnDestroy(): void {
+    this.addSetOfDataSubscription?.unsubscribe();
   }
 }

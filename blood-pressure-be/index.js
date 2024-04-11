@@ -115,6 +115,27 @@ app.post("/add", (req, res, next) => {
   });
 });
 
+app.post("/add-data-array", (req, res, next) => {
+  const db = new sqlite3.Database("./blood-pressure.db");
+  db.serialize(() => {
+    for (let i of req.body) {
+      const date = moment(new Date(i.recorded)).format("YYYY-MM-DD HH:mm");
+      const sys = i.sys;
+      const dia = i.dia;
+      const pulse = i.pulse;
+      const other = i.other;
+      const mood = i.mood;
+      const sql = `INSERT INTO bloodpressure (recorded,sys,dia, pulse, other, mood) VALUES  ('${date}', ${sys},${dia},${pulse},'${other}','${mood}')`;
+      db.run(sql, (err, row) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+      });
+    }
+    res.json({ text: "Added successfully." });
+  });
+});
+
 app.patch("/update/:id", (req, res) => {
   const db = new sqlite3.Database("./blood-pressure.db");
   db.serialize(() => {
