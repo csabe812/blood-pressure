@@ -1,6 +1,6 @@
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -14,12 +14,9 @@ import { selectLastTenBloodPressureData } from '../../store/blood-pressure.selec
   templateUrl: './last-ten.component.html',
   styleUrl: './last-ten.component.scss',
 })
-export class LastTenComponent implements OnInit {
-  data$?: Observable<BloodData[]>;
-
-  constructor(private store: Store) {}
-
-  ngOnInit(): void {
-    this.data$ = this.store.select(selectLastTenBloodPressureData);
-  }
+export class LastTenComponent {
+  store = inject(Store);
+  data$?: Observable<BloodData[]> = this.store.select(
+    selectLastTenBloodPressureData
+  );
 }

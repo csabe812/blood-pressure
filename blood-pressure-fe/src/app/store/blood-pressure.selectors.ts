@@ -33,3 +33,8 @@ export const selectYears = createSelector(
   selectData,
   (state: BlooodPressureData) => state.years
 );
+
+export const selectDataById = (id: number) =>
+  createSelector(selectData, (state: BlooodPressureData) =>
+    state.lastTenBloodPressureData.find((f) => id === f.id)
+  );

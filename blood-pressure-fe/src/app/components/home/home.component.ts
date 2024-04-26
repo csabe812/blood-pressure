@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -13,9 +13,8 @@ import { selectLastBloodPressureData } from '../../store/blood-pressure.selector
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  lastData$?: Observable<BloodData>;
-
-  constructor(private store: Store) {
-    this.lastData$ = this.store.select(selectLastBloodPressureData);
-  }
+  store = inject(Store);
+  lastData$: Observable<BloodData> = this.store.select(
+    selectLastBloodPressureData
+  );
 }
