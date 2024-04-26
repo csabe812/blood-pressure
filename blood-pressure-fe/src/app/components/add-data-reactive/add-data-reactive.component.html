@@ -15,9 +15,9 @@
                             <input type="number" class="form-control" id="sys" formControlName="sys"
                                 [ngClass]="{ 'is-invalid': (submitted || bloodData.controls.sys.touched) && bloodData.controls.sys.invalid }">
                             <div *ngIf="bloodData.controls.sys.errors" class="invalid-feedback">
-                                <div *ngIf="bloodData.controls.sys.errors.required">Sys is required</div>
-                                <div *ngIf="bloodData.controls.sys.errors.min">Minimum value is (50).</div>
-                                <div *ngIf="bloodData.controls.sys.errors.max">Maximum value is (250).</div>
+                                <div *ngIf="bloodData.controls.sys.errors.required" id="sys-required-error">Sys is required</div>
+                                <div *ngIf="bloodData.controls.sys.errors.min" id="sys-min-error">Minimum value is (50).</div>
+                                <div *ngIf="bloodData.controls.sys.errors.max" id="sys-max-error">Maximum value is (250).</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -25,9 +25,9 @@
                             <input type="number" class="form-control" id="dia" formControlName="dia"
                                 [ngClass]="{ 'is-invalid': (submitted || bloodData.controls.dia.touched) && bloodData.controls.dia.invalid }">
                             <div *ngIf="bloodData.controls.dia.errors" class="invalid-feedback">
-                                <div *ngIf="bloodData.controls.dia.errors.required">Dia is required</div>
-                                <div *ngIf="bloodData.controls.dia.errors.min">Minimum value is (20).</div>
-                                <div *ngIf="bloodData.controls.dia.errors.max">Maximum value is (200).</div>
+                                <div *ngIf="bloodData.controls.dia.errors.required" id="dia-required-error">Dia is required</div>
+                                <div *ngIf="bloodData.controls.dia.errors.min" id="dia-min-error">Minimum value is (20).</div>
+                                <div *ngIf="bloodData.controls.dia.errors.max" id="dia-max-error">Maximum value is (200).</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -35,9 +35,9 @@
                             <input type="number" class="form-control" id="pulse" formControlName="pulse"
                                 [ngClass]="{ 'is-invalid': (submitted || bloodData.controls.pulse.touched) && bloodData.controls.pulse.invalid }">
                             <div *ngIf="bloodData.controls.pulse.errors" class="invalid-feedback">
-                                <div *ngIf="bloodData.controls.pulse.errors.required">Pulse is required</div>
-                                <div *ngIf="bloodData.controls.pulse.errors.min">Minimum value is (20).</div>
-                                <div *ngIf="bloodData.controls.pulse.errors.max">Maximum value is (220).</div>
+                                <div *ngIf="bloodData.controls.pulse.errors.required" id="pulse-required-error">Pulse is required</div>
+                                <div *ngIf="bloodData.controls.pulse.errors.min" id="pulse-min-error">Minimum value is (20).</div>
+                                <div *ngIf="bloodData.controls.pulse.errors.max" id="pulse-max-error">Maximum value is (220).</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -58,7 +58,7 @@
                 <div class="col-md-4 offset-md-4">
                     <button class="btn btn-secondary w-100 mt-3" routerLink="/">Back</button>
                     <button type="button" class="btn btn-success w-100 mt-2" (click)="onAddNewData()">Add new data</button>
-                    <button *ngIf="bloodDataForm.controls.data.length > 0" type="submit" class="btn btn-primary w-100 mt-2">Submit</button>
+                    <button *ngIf="bloodDataForm.controls.data.length > 0" type="submit" class="btn btn-primary w-100 mt-2" id="submit-btn">Submit</button>
                 </div>
             </div>
         </div>
