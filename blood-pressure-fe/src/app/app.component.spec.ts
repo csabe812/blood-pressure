@@ -1,9 +1,24 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
+import { BlooodPressureData } from './store/blood-pressure.state';
 
 describe('AppComponent', () => {
-  const initialState = {};
+  const initialState: BlooodPressureData = {
+    lastBloodPressure: {
+      sys: 0,
+      dia: 0,
+      pulse: 0,
+      other: '',
+      recorded: new Date(),
+    },
+    lastTenBloodPressureData: [],
+    averageData: [],
+    bloodDataByYear: [],
+    years: [],
+  };
+  {
+  }
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],

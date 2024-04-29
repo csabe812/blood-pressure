@@ -31,7 +31,7 @@ describe('AddDataReactiveComponent', () => {
 
   it('should display "Minimum value is (50)." if the systolic value is less than 50', () => {
     const sysInput = fixture.nativeElement.querySelector(
-      'input[id="sys"]'
+      'input[id="sys-0"]'
     ) as HTMLInputElement;
 
     sysInput.value = '10';
@@ -47,7 +47,7 @@ describe('AddDataReactiveComponent', () => {
 
   it('should display "Maximum value is (250)." if the systolic value is greater than 250', () => {
     const sysInput = fixture.nativeElement.querySelector(
-      'input[id="sys"]'
+      'input[id="sys-0"]'
     ) as HTMLInputElement;
 
     sysInput.value = '260';
@@ -63,7 +63,7 @@ describe('AddDataReactiveComponent', () => {
 
   it('should display "Sys is required" if we click into the input field and then out without entering anything', () => {
     const sysInput = fixture.nativeElement.querySelector(
-      'input[id="sys"]'
+      'input[id="sys-0"]'
     ) as HTMLInputElement;
 
     sysInput.value = '';
@@ -106,5 +106,33 @@ describe('AddDataReactiveComponent', () => {
 
     expect(pulseRequired.textContent).toContain('Pulse is required');
     expect(pulseRequired).not.toBeNull();
+  });
+
+  it('should add new form', () => {
+    const addNewBtn = fixture.nativeElement.querySelector(
+      '#add-new-data'
+    ) as HTMLButtonElement;
+
+    // Press the submit button
+    addNewBtn.click();
+    fixture.detectChanges();
+
+    const data1 = fixture.nativeElement.querySelector('#data-idx-1');
+
+    expect(data1.textContent).toContain('Data idx: 1');
+    expect(data1).not.toBeNull();
+  });
+
+  it('should delete a form', () => {
+    const deleteBtn = fixture.nativeElement.querySelector(
+      '#delete-id-0'
+    ) as HTMLButtonElement;
+
+    // Press the submit button
+    deleteBtn.click();
+    fixture.detectChanges();
+
+    const data0 = fixture.nativeElement.querySelector('#data-idx-0');
+    expect(data0).toBeNull();
   });
 });

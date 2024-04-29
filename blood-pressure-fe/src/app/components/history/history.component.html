@@ -6,10 +6,10 @@
   <ng-container *ngIf="years$ | async as years">
     <div class="row g-1 mt-3">
       <div class="col-12 text-center">
-        <p>Averages - Bar</p>
+        <p id="average-current-year">Averages - Bar {{currentYear}}</p>
       </div>
       <div class="col-4" *ngFor="let i of years">
-        <button class="btn btn-primary w-100" (click)="changeData(i)">{{i}}</button>
+        <button class="btn btn-primary w-100" (click)="changeData(i)" id="change-data-{{i}}">{{i}}</button>
       </div>
     </div>
 

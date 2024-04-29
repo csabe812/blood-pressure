@@ -28,6 +28,7 @@ export class HistoryComponent {
   store = inject(Store);
   bpService = inject(BloodPressureService);
 
+  currentYear: number;
   title = 'blood-pressure-fe';
   chart!: Chart;
   years$: Observable<number[]> = this.store.select(selectYears);
@@ -60,6 +61,7 @@ export class HistoryComponent {
     /*this.http
       .get<any>(`${environment.API_URL}average/` + year)
       .subscribe((data) => this.createChart(data));*/
+    this.currentYear = year;
     this.data$ = this.store
       .select(selectAverageDataByYear(year))
       .pipe(tap((d: AverageData) => this.createChart(d)));

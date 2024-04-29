@@ -15,7 +15,7 @@ export class BloodPressureService {
   }
 
   addDataArray(data: BloodData[]) {
-    return this.http.post<string>(this.url + 'add-data-array', data);
+    return this.http.post<{ text: string }>(this.url + 'add-data-array', data);
   }
 
   updateData(id: number, data: BloodData) {
