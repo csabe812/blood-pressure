@@ -135,4 +135,56 @@ describe('AddDataReactiveComponent', () => {
     const data0 = fixture.nativeElement.querySelector('#data-idx-0');
     expect(data0).toBeNull();
   });
+
+  it('should add two blood pressure data', () => {
+    const addNewBtn = fixture.nativeElement.querySelector(
+      '#add-new-data'
+    ) as HTMLButtonElement;
+
+    // Press the submit button
+    addNewBtn.click();
+    fixture.detectChanges();
+
+    const sys0Input = fixture.nativeElement.querySelector(
+      'input[id="sys-0"]'
+    ) as HTMLInputElement;
+    sys0Input.value = '120';
+    const dia0Input = fixture.nativeElement.querySelector(
+      'input[id="dia-0"]'
+    ) as HTMLInputElement;
+    dia0Input.value = '80';
+    const pulse0Input = fixture.nativeElement.querySelector(
+      'input[id="pulse-0"]'
+    ) as HTMLInputElement;
+    pulse0Input.value = '70';
+
+    const sys1Input = fixture.nativeElement.querySelector(
+      'input[id="sys-1"]'
+    ) as HTMLInputElement;
+    sys1Input.value = '121';
+    const dia1Input = fixture.nativeElement.querySelector(
+      'input[id="dia-1"]'
+    ) as HTMLInputElement;
+    dia1Input.value = '81';
+    const pulse1Input = fixture.nativeElement.querySelector(
+      'input[id="pulse-1"]'
+    ) as HTMLInputElement;
+    pulse1Input.value = '71';
+    fixture.detectChanges();
+
+    const submitButton = fixture.nativeElement.querySelector(
+      '#submit-btn'
+    ) as HTMLButtonElement;
+
+    // Press the submit button
+    submitButton.click();
+    fixture.detectChanges();
+
+    expect(sys0Input.textContent).toBe('');
+    expect(sys1Input.textContent).toBe('');
+    expect(dia0Input.textContent).toBe('');
+    expect(dia1Input.textContent).toBe('');
+    expect(pulse0Input.textContent).toBe('');
+    expect(pulse1Input.textContent).toBe('');
+  });
 });
