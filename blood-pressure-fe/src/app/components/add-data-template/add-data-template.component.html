@@ -5,13 +5,13 @@
             <label for="sys">Sys</label>
             <input type="number" class="form-control" id="sys" required [(ngModel)]="model.sys" name="sys"
                 #sys="ngModel" [ngClass]="{ 'is-invalid': (submitted || sys?.touched) && sys?.invalid }" min="50" max="250">
-            <div *ngIf="sys?.errors?.required" class="invalid-feedback">
+            <div *ngIf="sys?.errors?.required" class="invalid-feedback" id="sys-required-error">
                 Sys is required
             </div>
-            <div *ngIf="sys?.errors?.min" class="invalid-feedback">
+            <div *ngIf="sys?.errors?.min" class="invalid-feedback" id="sys-min-error">
                 Minimum value is (50).
             </div>
-            <div *ngIf="sys?.errors?.max" class="invalid-feedback">
+            <div *ngIf="sys?.errors?.max" class="invalid-feedback" id="sys-max-error">
                 Maximum value is (250).
             </div>
         </div>
@@ -19,7 +19,7 @@
             <label for="dia">Dia</label>
             <input type="number" class="form-control" id="dia" required [(ngModel)]="model.dia" name="dia"
                 #dia="ngModel" [ngClass]="{ 'is-invalid': (submitted || dia?.touched) && dia?.invalid }" min="20" max="200">
-            <div *ngIf="dia?.errors?.required" class="invalid-feedback">
+            <div *ngIf="dia?.errors?.required" class="invalid-feedback" id="dia-required-error">
                 Dia is required
             </div>
             <div *ngIf="dia?.errors?.min" class="invalid-feedback">
@@ -33,7 +33,7 @@
             <label for="pulse">Pulse</label>
             <input type="number" class="form-control" id="pulse" required [(ngModel)]="model.pulse" name="pulse"
                 #pulse="ngModel" [ngClass]="{ 'is-invalid': (submitted || pulse?.touched) && pulse?.invalid }" min="20" max="220">
-            <div *ngIf="pulse?.errors?.required" class="invalid-feedback">
+            <div *ngIf="pulse?.errors?.required" class="invalid-feedback" id="pulse-required-error">
                 Pulse is required
             </div>
             <div *ngIf="pulse?.errors?.min" class="invalid-feedback">
@@ -58,7 +58,7 @@
         </div>
         <div class="col-md-4 offset-md-4">
             <button class="btn btn-secondary w-100 mt-3" routerLink="/">Back</button>
-            <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+            <button type="submit" class="btn btn-primary w-100 mt-3" id="submit-btn">Submit</button>
             <!--button class="btn btn-primary" type="button" disabled>
                 <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
                 <span role="status">Loading...</span>
