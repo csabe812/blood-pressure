@@ -1,6 +1,7 @@
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
+let chart;
 
 export const createDiagram = (
   type: 'bar' | 'line',
@@ -8,7 +9,8 @@ export const createDiagram = (
   datasets: any,
   ranges: { minValue: number; maxValue: number }
 ) => {
-  return new Chart('canvas', {
+  chart?.destroy();
+  chart = new Chart('canvas', {
     type,
     data: {
       labels,
@@ -16,6 +18,7 @@ export const createDiagram = (
     },
     options: type === 'bar' ? barOptions(ranges) : lineOptions(ranges),
   });
+  return chart;
 };
 
 export const lineOptions = (ranges: { minValue: number; maxValue: number }) => {
